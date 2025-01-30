@@ -1,0 +1,27 @@
+diff --git a/phynder-1.0/Makefile b/phynder-1.0/Makefile
+index b554aa0..86551be 100644
+--- a/phynder-1.0/Makefile
++++ b/phynder-1.0/Makefile
+@@ -2,10 +2,10 @@
+ 
+ #CFLAGS= -O3
+ CFLAGS= -g				# for debugging
+-HTSDIR=../htslib
+-CPPFLAGS=-I$(HTSDIR)
++HTSDIR=/app/path_phynder/tools
++CPPFLAGS=-I$(HTSDIR)/include
+ 
+-HTSLIB=$(HTSDIR)/libhts.a
++HTSLIB=$(HTSDIR)/lib/libhts.a
+ include $(HTSDIR)/htslib_static.mk
+ LDLIBS=$(HTSLIB) -lpthread $(HTSLIB_static_LIBS)
+ 
+@@ -15,7 +15,7 @@ clean:
+ 	$(RM) -r phynder *.o *~ *test *.dSYM
+ 
+ install: phynder
+-	cp phynder ~/bin
++	cp phynder /app/path_phynder/tools/bin
+ 
+ ### header dependencies
+ 

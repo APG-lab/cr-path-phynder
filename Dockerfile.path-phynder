@@ -1,0 +1,89 @@
+FROM ubuntu:jammy
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
+	--no-install-recommends \
+	build-essential \
+	software-properties-common \
+	dirmngr \
+	locales
+RUN locale-gen en_US.UTF-8
+RUN apt-get install -y sudo
+WORKDIR /app/path_phynder/tools
+RUN echo "done"
+WORKDIR /app/path_phynder/sources
+COPY resources/marutter_pubkey.asc .
+COPY resources/bcftools-1.21.tar.bz2 .
+COPY resources/htslib-1.21.tar.bz2 .
+COPY resources/samtools-1.21.tar.bz2 .
+COPY resources/phynder-v1.0.zip .
+COPY resources/phynder-makefile.patch .
+COPY resources/pathPhynder-v1.2.3.zip .
+COPY resources/path-phynder.patch .
+RUN cat marutter_pubkey.asc | sudo tee -a /etc/apt/trusted.gpg.d/cran_ubuntu_key.asc
+RUN add-apt-repository "deb https://cloud.r-project.org/bin/linux/ubuntu jammy-cran40/"
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y \
+	--no-install-recommends \
+	zlib1g-dev \
+	libbz2-dev \
+	libxml2-dev \
+	libfontconfig-dev \
+	libfreetype-dev \
+	libssl-dev \
+	libcurl4-openssl-dev \
+	libharfbuzz-dev \
+	libfribidi-dev \
+	liblapack-dev \
+	libblas-dev \
+	liblapacke-dev \
+	libgsl-dev \
+	libgdal-dev \
+	libopenblas-dev \
+	gfortran \
+	libfreetype6-dev \
+	libpng-dev \
+	libtiff5-dev \
+	libjpeg-dev \
+	libxml++2.6-dev \
+	pkg-config \
+	libnlopt-dev \
+	libudunits2-dev \
+	less \
+	cmake \
+	r-base \
+	libncurses5-dev \
+	unzip \
+	vim
+RUN Rscript -e 'install.packages ("tidyverse")'
+RUN Rscript -e 'install.packages ("BiocManager")'
+RUN Rscript -e 'install.packages ("ggpubr")'
+RUN Rscript -e 'install.packages ("optparse")'
+RUN Rscript -e 'install.packages ("phytools")'
+RUN Rscript -e 'install.packages ("scales")'
+RUN tar -xjf htslib-1.21.tar.bz2 && \
+	cd htslib-1.21 && \
+	autoreconf -i && \
+	./configure --prefix /app/path_phynder/tools && \
+	make && \
+	make lib-static htslib_static.mk && \
+	make install
+RUN cp htslib-1.21/htslib_static.mk /app/path_phynder/tools/
+RUN tar -xjf bcftools-1.21.tar.bz2 && \
+	cd bcftools-1.21 && \
+	./configure --prefix /app/path_phynder/tools && \
+	make && \
+	make install
+RUN tar -xjf samtools-1.21.tar.bz2 && \
+	cd samtools-1.21 && \
+	./configure --prefix /app/path_phynder/tools && \
+	make && \
+	make install
+RUN unzip phynder-v1.0.zip && \
+	patch -p1 < phynder-makefile.patch && \
+	cd phynder-1.0 \
+	make && \
+	make install
+RUN unzip -d /app/path_phynder pathPhynder-v1.2.3.zip && \
+	cd /app/path_phynder && \
+	patch -p1 < /app/path_phynder/sources/path-phynder.patch && \
+	chmod ugo+x pathPhynder-1.2.3/R/*.R
+RUN cd /app/path_phynder && rm -r sources
+ENV PATH="/app/path_phynder/tools/bin:/app/path_phynder/pathPhynder-1.2.3:/app/path_phynder/pathPhynder-1.2.3/R:${PATH}"

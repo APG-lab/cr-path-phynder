@@ -1,0 +1,336 @@
+diff --git a/pathPhynder-1.2.3/R/Ympute.R b/pathPhynder-1.2.3/R/Ympute.R
+index 978604b..46a8268 100644
+--- a/pathPhynder-1.2.3/R/Ympute.R
++++ b/pathPhynder-1.2.3/R/Ympute.R
+@@ -1,3 +1,5 @@
++#!/usr/bin/env Rscript
++
+ require(phytools, quietly = TRUE)
+ 
+ 
+@@ -289,4 +291,5 @@ for (snp in vcf$POS){
+ 
+ vcf[(is.na(vcf))]<-'.'
+ write.table(vcf, file=args[3], quote=F, sep='\t', row.names=F)
+-write.table(report, file="report2.txt", quote=F, sep='\t', row.names=F)
+\ No newline at end of file
++write.table(report, file="report2.txt", quote=F, sep='\t', row.names=F)
++
+diff --git a/pathPhynder-1.2.3/R/Ympute2.R b/pathPhynder-1.2.3/R/Ympute2.R
+index 23a0258..7602bfd 100644
+--- a/pathPhynder-1.2.3/R/Ympute2.R
++++ b/pathPhynder-1.2.3/R/Ympute2.R
+@@ -1,4 +1,4 @@
+-
++#!/usr/bin/env Rscript
+ 
+ 
+ require(phytools, quietly = TRUE)
+diff --git a/pathPhynder-1.2.3/R/addAncToTree.R b/pathPhynder-1.2.3/R/addAncToTree.R
+index c198be9..7b5fa40 100644
+--- a/pathPhynder-1.2.3/R/addAncToTree.R
++++ b/pathPhynder-1.2.3/R/addAncToTree.R
+@@ -1,11 +1,14 @@
++#!/usr/bin/env Rscript
++
+ suppressWarnings(suppressPackageStartupMessages(library("phytools")))
+ 
+ cat('\n\n',"addAncToTree.R", '\n\n\n')
+ 
+ tmparg <- commandArgs(trailingOnly = F)  
+-scriptPath <- normalizePath(dirname(sub("^--file=", "", tmparg[grep("^--file=", tmparg)])))
++#scriptPath <- normalizePath(dirname(sub("^--file=", "", tmparg[grep("^--file=", tmparg)])))
+ # tmpstr<-system('bash -l',input=c("shopt -s expand_aliases","type pathPhynder"), intern=T)
+-packpwd<-paste0(gsub('addAncToTree.R','',gsub('\'','',gsub('.*.Rscript ','',scriptPath))),'')
++#packpwd<-paste0(gsub('addAncToTree.R','',gsub('\'','',gsub('.*.Rscript ','',scriptPath))),'')
++packpwd<-"/app/path_phynder/pathPhynder-1.2.3/R"
+ 
+ source(paste0(packpwd,'/functions_pathPhynder.R'))
+ getAncestors<-phytools:::getAncestors
+@@ -120,4 +123,5 @@ pdf(file=paste0("results_folder","/final_tree.pdf"), height=estimatePlotDimensio
+ plot(ladderize(newtree), show.tip.label=T,tip.color=ifelse(newtree$tip.label %in% added_samples, yes=2, no=1), cex=0.15)
+ dev.off()
+ 
+-write.tree(newtree,file=paste0('results_folder','/final_tree.nwk'))
+\ No newline at end of file
++write.tree(newtree,file=paste0('results_folder','/final_tree.nwk'))
++
+diff --git a/pathPhynder-1.2.3/R/ancient_SNPs_to_branches.R b/pathPhynder-1.2.3/R/ancient_SNPs_to_branches.R
+index 3d46a8c..d630bcf 100755
+--- a/pathPhynder-1.2.3/R/ancient_SNPs_to_branches.R
++++ b/pathPhynder-1.2.3/R/ancient_SNPs_to_branches.R
+@@ -1,3 +1,4 @@
++#!/usr/bin/env Rscript
+ 
+ # usage:
+ # Rscript ancient_SNPs_to_branches.R <input_phylogeny.nwk> <prefix>.Rdata <intree_folder> <results_folder>
+diff --git a/pathPhynder-1.2.3/R/assign_noNA.R b/pathPhynder-1.2.3/R/assign_noNA.R
+index 159a66b..b6ab484 100644
+--- a/pathPhynder-1.2.3/R/assign_noNA.R
++++ b/pathPhynder-1.2.3/R/assign_noNA.R
+@@ -1,3 +1,5 @@
++#!/usr/bin/env Rscript
++
+ # pathPhynder
+ # Author: Rui Martiniano
+ # Contact: rm890 [at] cam.ac.uk
+@@ -317,7 +319,8 @@ cat(paste0("    Number of SNPs with no missing data: ", dim(complete_vcf)[1]),'\
+ tmparg <- commandArgs(trailingOnly = F)  
+ scriptPath <- normalizePath(dirname(sub("^--file=", "", tmparg[grep("^--file=", tmparg)])))
+ # tmpstr<-system('bash -l',input=c("shopt -s expand_aliases","type pathPhynder"), intern=T)
+-packpwd<-paste0(gsub('pathPhynder.R','',gsub('\'','',gsub('.*.Rscript ','',scriptPath))),'/R')
++#packpwd<-paste0(gsub('pathPhynder.R','',gsub('\'','',gsub('.*.Rscript ','',scriptPath))),'/R')
++packpwd<-"/app/path_phynder/pathPhynder-1.2.3/R"
+ 
+ 
+ edges<-data.frame(tree$edge)
+diff --git a/pathPhynder-1.2.3/R/chooseBestPath.R b/pathPhynder-1.2.3/R/chooseBestPath.R
+index 23ceb74..4af9990 100755
+--- a/pathPhynder-1.2.3/R/chooseBestPath.R
++++ b/pathPhynder-1.2.3/R/chooseBestPath.R
+@@ -1,3 +1,5 @@
++#!/usr/bin/env Rscript
++
+ suppressWarnings(suppressPackageStartupMessages(library(scales)))
+ suppressWarnings(suppressPackageStartupMessages(library(phytools)))
+ 
+@@ -6,7 +8,8 @@ getAncestors<-phytools:::getAncestors
+ tmparg <- commandArgs(trailingOnly = F)  
+ scriptPath <- normalizePath(dirname(sub("^--file=", "", tmparg[grep("^--file=", tmparg)])))
+ # tmpstr<-system('bash -l',input=c("shopt -s expand_aliases","type pathPhynder"), intern=T)
+-packpwd<-paste0(gsub('chooseBestPath.R','',gsub('\'','',gsub('.*.Rscript ','',scriptPath))),'')
++#packpwd<-paste0(gsub('chooseBestPath.R','',gsub('\'','',gsub('.*.Rscript ','',scriptPath))),'')
++packpwd<-"/app/path_phynder/pathPhynder-1.2.3/R"
+ 
+ args = commandArgs(trailingOnly=TRUE)
+ 
+diff --git a/pathPhynder-1.2.3/R/functions_pathPhynder.R b/pathPhynder-1.2.3/R/functions_pathPhynder.R
+index d094526..a27f846 100644
+--- a/pathPhynder-1.2.3/R/functions_pathPhynder.R
++++ b/pathPhynder-1.2.3/R/functions_pathPhynder.R
+@@ -2,7 +2,8 @@
+ tmparg <- commandArgs(trailingOnly = F)  
+ scriptPath <- normalizePath(dirname(sub("^--file=", "", tmparg[grep("^--file=", tmparg)])))
+ # tmpstr<-system('bash -l',input=c("shopt -s expand_aliases","type pathPhynder"), intern=T)
+-packpwd<-paste0(gsub('functions_pathPhynder.R','',gsub('\'','',gsub('.*.Rscript ','',scriptPath))),'')
++#packpwd<-paste0(gsub('functions_pathPhynder.R','',gsub('\'','',gsub('.*.Rscript ','',scriptPath))),'')
++packpwd<-"/app/path_phynder/pathPhynder-1.2.3/R"
+ 
+ getAncestors<-phytools:::getAncestors
+ 
+@@ -501,7 +502,7 @@ if (is.null(hg_unfilt)){
+ 
+ 	likely_assignment_table<-ders[!ders$hg %in% unlikely_table$hg,]
+ 
+-	ordering_file=paste0(gsub("R$","",packpwd), "data/hap_order.txt")
++	ordering_file=paste0(packpwd, "/../data/hap_order.txt")
+ 
+ 	ordering<-read.table(ordering_file)
+ 	likely_assignment_table<-likely_assignment_table[order(match(likely_assignment_table$hg, ordering$V1)),]
+diff --git a/pathPhynder-1.2.3/R/make_vcf.R b/pathPhynder-1.2.3/R/make_vcf.R
+index 7066184..99e2e31 100644
+--- a/pathPhynder-1.2.3/R/make_vcf.R
++++ b/pathPhynder-1.2.3/R/make_vcf.R
+@@ -1,3 +1,4 @@
++#!/usr/bin/env Rscript
+ 
+ cat('\n\n',"Preparing files for sample placement", '\n\n\n')
+ 
+diff --git a/pathPhynder-1.2.3/R/pathPhynder_likelihood_runner.R b/pathPhynder-1.2.3/R/pathPhynder_likelihood_runner.R
+index 6f2c6c6..ecf12b9 100644
+--- a/pathPhynder-1.2.3/R/pathPhynder_likelihood_runner.R
++++ b/pathPhynder-1.2.3/R/pathPhynder_likelihood_runner.R
+@@ -1,3 +1,5 @@
++#!/usr/bin/env Rscript
++
+ suppressWarnings(suppressPackageStartupMessages(library(data.table)))
+ suppressWarnings(suppressPackageStartupMessages(library(phytools)))
+ suppressWarnings(suppressPackageStartupMessages(library(phangorn)))
+@@ -6,8 +8,8 @@ suppressWarnings(suppressPackageStartupMessages(library(pracma)))
+ tmparg <- commandArgs(trailingOnly = F)  
+ scriptPath <- normalizePath(dirname(sub("^--file=", "", tmparg[grep("^--file=", tmparg)])))
+ # tmpstr<-system('bash -l',input=c("shopt -s expand_aliases","type pathPhynder"), intern=T)
+-packpwd<-paste0(gsub('pathPhynder.R','',gsub('\'','',gsub('.*.Rscript ','',scriptPath))),'/R')
+-
++#packpwd<-paste0(gsub('pathPhynder.R','',gsub('\'','',gsub('.*.Rscript ','',scriptPath))),'/R')
++packpwd<-"/app/path_phynder/pathPhynder-1.2.3/R"
+ 
+ tmparg <- commandArgs(trailingOnly = F)  
+ scriptPath <- normalizePath(dirname(sub("^--file=", "", tmparg[grep("^--file=", tmparg)])))
+diff --git a/pathPhynder-1.2.3/R/pileup_and_filter.R b/pathPhynder-1.2.3/R/pileup_and_filter.R
+index 9e5a061..5ab9ddf 100644
+--- a/pathPhynder-1.2.3/R/pileup_and_filter.R
++++ b/pathPhynder-1.2.3/R/pileup_and_filter.R
+@@ -1,3 +1,5 @@
++#!/usr/bin/env Rscript
++
+ # pileup_and_filter.R
+ # runs pileup and filters bases, outputs intree files
+ 
+@@ -15,8 +17,8 @@ if (length(args)<10) {
+ tmparg <- commandArgs(trailingOnly = F)  
+ scriptPath <- normalizePath(dirname(sub("^--file=", "", tmparg[grep("^--file=", tmparg)])))
+ # tmpstr<-system('bash -l',input=c("shopt -s expand_aliases","type pathPhynder"), intern=T)
+-packpwd<-paste0(gsub('pileup_and_filter.R','',gsub('\'','',gsub('.*.Rscript ','',scriptPath))),'')
+-
++#packpwd<-paste0(gsub('pileup_and_filter.R','',gsub('\'','',gsub('.*.Rscript ','',scriptPath))),'')
++packpwd<-"/app/path_phynder/pathPhynder-1.2.3/R"
+ 
+ sites_data<-args[2] 
+ intree_folder<-args[3]
+@@ -104,7 +106,7 @@ if (input_type=="bam_file"){
+ 			#for likelihood estimation
+ 			#if 'likes' in names of sites variable, then output with name 'status.txt'
+ 			if (length(grep('likes', sites_var))>0){
+-				cmd_likes=paste0("python3 ",gsub("R$","",packpwd), "inst/python/call_bases_chrY_v2.1.py ",
++				cmd_likes=paste0(packpwd, "/../inst/python/call_bases_chrY_v2.1.py ",
+ 					paste0(" -i ", intree_folder,'/',sample_name,".pileup"),
+ 					paste0(" -m ", mode),
+ 					paste0(" -o ", intree_folder,'/',sample_name,".status.txt"),
+@@ -115,7 +117,7 @@ if (input_type=="bam_file"){
+ 				system(cmd_likes, wait=T)
+ 			} else {
+ 				#for best path estimation
+-				cmd_bestpath=paste0("python3 ",gsub("R$","",packpwd), "inst/python/call_bases_chrY_v2.1.py ",
++				cmd_bestpath=paste0(packpwd, "/../inst/python/call_bases_chrY_v2.1.py ",
+ 					paste0(" -i ", intree_folder,'/',sample_name,".pileup"),
+ 					paste0(" -m ", mode),
+ 					paste0(" -o ", intree_folder,'/',sample_name,".intree.txt"),
+diff --git a/pathPhynder-1.2.3/R/plot_likes.R b/pathPhynder-1.2.3/R/plot_likes.R
+index afc7839..68dbfb1 100644
+--- a/pathPhynder-1.2.3/R/plot_likes.R
++++ b/pathPhynder-1.2.3/R/plot_likes.R
+@@ -1,3 +1,5 @@
++#!/usr/bin/env Rscript
++
+ ######################################################
+ # plotting functions for phynder sample placement output
+ # (Rui Martiniano; Bianca de Sanctis 2019/2020)
+diff --git a/pathPhynder-1.2.3/R/prep_files.R b/pathPhynder-1.2.3/R/prep_files.R
+index 4806abe..1e84a57 100644
+--- a/pathPhynder-1.2.3/R/prep_files.R
++++ b/pathPhynder-1.2.3/R/prep_files.R
+@@ -1,3 +1,5 @@
++#!/usr/bin/env Rscript
++
+ # pathPhynder
+ # Author: Rui Martiniano
+ # Contact: rm890 [at] cam.ac.uk
+diff --git a/pathPhynder-1.2.3/R/prepare_sites_likelihood.R b/pathPhynder-1.2.3/R/prepare_sites_likelihood.R
+index ddf82fc..7b9194d 100644
+--- a/pathPhynder-1.2.3/R/prepare_sites_likelihood.R
++++ b/pathPhynder-1.2.3/R/prepare_sites_likelihood.R
+@@ -1,3 +1,4 @@
++#!/usr/bin/env Rscript
+ 
+ require(data.table, quietly = TRUE)
+ require(phytools, quietly = TRUE)
+diff --git a/pathPhynder-1.2.3/inst/python/call_bases_chrY_v2.1.py b/pathPhynder-1.2.3/inst/python/call_bases_chrY_v2.1.py
+index ff0fb81..dfe94a9 100644
+--- a/pathPhynder-1.2.3/inst/python/call_bases_chrY_v2.1.py
++++ b/pathPhynder-1.2.3/inst/python/call_bases_chrY_v2.1.py
+@@ -1,3 +1,5 @@
++#!/usr/bin/env python3
++
+ import argparse
+ import sys
+ import time
+diff --git a/pathPhynder-1.2.3/pathPhynder.R b/pathPhynder-1.2.3/pathPhynder.R
+index 1cb2e92..a1aebee 100755
+--- a/pathPhynder-1.2.3/pathPhynder.R
++++ b/pathPhynder-1.2.3/pathPhynder.R
+@@ -11,8 +11,8 @@ current_version<-'Version: 1.2.3'
+ tmparg <- commandArgs(trailingOnly = F)  
+ scriptPath <- normalizePath(dirname(sub("^--file=", "", tmparg[grep("^--file=", tmparg)])))
+ # tmpstr<-system('bash -l',input=c("shopt -s expand_aliases","type pathPhynder"), intern=T)
+-packpwd<-paste0(gsub('pathPhynder.R','',gsub('\'','',gsub('.*.Rscript ','',scriptPath))),'/R')
+-
++#packpwd<-paste0(gsub('pathPhynder.R','',gsub('\'','',gsub('.*.Rscript ','',scriptPath))),'/R')
++packpwd<-"/app/path_phynder/pathPhynder-1.2.3/R"
+ 
+ st=format(Sys.time(), "%Y-%m-%d_%H:%M")
+ logname<-paste("log.",st, ".txt", sep = "")
+@@ -286,7 +286,7 @@ if(opt$step == "prepare") {
+         stop('Please provide branches.snp file created with phynder.')
+     }
+     
+-    system(paste("Rscript", paste0(packpwd,"/prep_files.R"), opt$input_tree, opt$branches_file, opt$prefix, opt$haplogroups))
++    system(paste0(packpwd,"/prep_files.R"), opt$input_tree, opt$branches_file, opt$prefix, opt$haplogroups)
+ 
+ 
+ 
+@@ -300,9 +300,9 @@ if(opt$step == "prepare") {
+ 
+         cat(paste0('Sample name:', opt$bam_file, '\n'))
+ 
+-        system(paste("Rscript", paste0(packpwd,"/pileup_and_filter.R"),opt$bam_file,opt$prefix,'intree_folder', opt$reference, opt$filtering_mode, chromosome_name,opt$pileup_read_mismatch_threshold, 'bam_file' , sample_name, opt$haplogroups,base_qual))
++        system(paste0(packpwd,"/pileup_and_filter.R"),opt$bam_file,opt$prefix,'intree_folder', opt$reference, opt$filtering_mode, chromosome_name,opt$pileup_read_mismatch_threshold, 'bam_file' , sample_name, opt$haplogroups,base_qual)
+ 
+-        system(paste("Rscript", paste0(packpwd,"/chooseBestPath.R"),opt$input_tree,opt$prefix,paste0('intree_folder/',opt$bam_file,'.intree.txt'), 'results_folder',  opt$maximumTolerance, sample_name, opt$haplogroups ))
++        system(paste0(packpwd,"/chooseBestPath.R"),opt$input_tree,opt$prefix,paste0('intree_folder/',opt$bam_file,'.intree.txt'), 'results_folder',  opt$maximumTolerance, sample_name, opt$haplogroups )
+ 
+     } else if (input_type=="bam_list"){
+ 
+@@ -313,14 +313,14 @@ if(opt$step == "prepare") {
+             sample_name<-unlist(strsplit(samp,'\\/'))[as.numeric(length(unlist(strsplit(samp,'\\/'))))]
+             cat(paste0('Sample name: ', sample_name, '\n'))
+ 
+-            system(paste("Rscript", paste0(packpwd,"/pileup_and_filter.R"),samp,opt$prefix,'intree_folder', opt$reference, opt$filtering_mode, chromosome_name,opt$pileup_read_mismatch_threshold, 'bam_file', sample_name ,opt$haplogroups,base_qual))
++            system(paste0(packpwd,"/pileup_and_filter.R"),samp,opt$prefix,'intree_folder', opt$reference, opt$filtering_mode, chromosome_name,opt$pileup_read_mismatch_threshold, 'bam_file', sample_name ,opt$haplogroups,base_qual)
+             
+-            system(paste("Rscript", paste0(packpwd,"/chooseBestPath.R"),opt$input_tree,opt$prefix,paste0('intree_folder/',sample_name,'.intree.txt'), 'results_folder',  opt$maximumTolerance, sample_name , opt$haplogroups ))
++            system(paste0(packpwd,"/chooseBestPath.R"),opt$input_tree,opt$prefix,paste0('intree_folder/',sample_name,'.intree.txt'), 'results_folder',  opt$maximumTolerance, sample_name , opt$haplogroups )
+       
+         }
+     }
+ 
+-    system(paste("Rscript", paste0(packpwd,"/addAncToTree.R"),opt$input_tree, 'results_folder',opt$prefix))
++    system(paste0(packpwd,"/addAncToTree.R"),opt$input_tree, 'results_folder',opt$prefix)
+ 
+ 
+ 
+@@ -331,7 +331,7 @@ if(opt$step == "prepare") {
+     if (input_type=="bam_file"){
+         cat(paste0('Sample name:', opt$bam_file, '\n'))
+ 
+-        system(paste("Rscript", paste0(packpwd,"/pileup_and_filter.R"),opt$bam_file,opt$prefix,'intree_folder', opt$reference, opt$filtering_mode, chromosome_name,opt$pileup_read_mismatch_threshold, 'bam_file', sample_name, opt$haplogroups,base_qual))
++        system(paste0(packpwd,"/pileup_and_filter.R"),opt$bam_file,opt$prefix,'intree_folder', opt$reference, opt$filtering_mode, chromosome_name,opt$pileup_read_mismatch_threshold, 'bam_file', sample_name, opt$haplogroups,base_qual)
+     
+     } else if (input_type=="bam_list"){
+ 
+@@ -342,7 +342,7 @@ if(opt$step == "prepare") {
+             sample_name<-unlist(strsplit(samp,'\\/'))[as.numeric(length(unlist(strsplit(samp,'\\/'))))]
+             cat(paste0('Sample name: ', sample_name, '\n'))
+ 
+-            system(paste("Rscript", paste0(packpwd,"/pileup_and_filter.R"),samp,opt$prefix,'intree_folder', opt$reference, opt$filtering_mode, chromosome_name,opt$pileup_read_mismatch_threshold, 'bam_file', sample_name ,opt$haplogroups,base_qual))
++            system(paste0(packpwd,"/pileup_and_filter.R"),samp,opt$prefix,'intree_folder', opt$reference, opt$filtering_mode, chromosome_name,opt$pileup_read_mismatch_threshold, 'bam_file', sample_name ,opt$haplogroups,base_qual)
+         
+         }
+     }
+@@ -354,7 +354,7 @@ if(opt$step == "prepare") {
+     if (input_type=="bam_file"){
+         cat(paste0('Sample name:', opt$bam_file, '\n'))
+ 
+-        system(paste("Rscript", paste0(packpwd,"/chooseBestPath.R"),opt$input_tree,opt$prefix,paste0('intree_folder/',opt$bam_file,'.intree.txt'), 'results_folder',  opt$maximumTolerance, sample_name , opt$haplogroups))
++        system(paste0(packpwd,"/chooseBestPath.R"),opt$input_tree,opt$prefix,paste0('intree_folder/',opt$bam_file,'.intree.txt'), 'results_folder',  opt$maximumTolerance, sample_name , opt$haplogroups)
+     
+     } else if (input_type=="bam_list"){
+ 
+@@ -365,7 +365,7 @@ if(opt$step == "prepare") {
+             sample_name<-unlist(strsplit(samp,'\\/'))[as.numeric(length(unlist(strsplit(samp,'\\/'))))]
+             cat(paste0('Sample name: ', sample_name, '\n'))
+ 
+-            system(paste("Rscript", paste0(packpwd,"/chooseBestPath.R"),opt$input_tree,opt$prefix,paste0('intree_folder/',sample_name,'.intree.txt'), 'results_folder',  opt$maximumTolerance, sample_name , opt$haplogroups))
++            system(paste0(packpwd,"/chooseBestPath.R"),opt$input_tree,opt$prefix,paste0('intree_folder/',sample_name,'.intree.txt'), 'results_folder',  opt$maximumTolerance, sample_name , opt$haplogroups)
+       
+         }
+     }
+@@ -373,7 +373,7 @@ if(opt$step == "prepare") {
+ } else if(opt$step == "addAncToTree" | opt$step == 3) {
+ 
+     cat("Running addAncToTree\n")
+-    system(paste("Rscript", paste0(packpwd,"/addAncToTree.R"),opt$input_tree, 'results_folder',opt$prefix))
++    system(paste0(packpwd,"/addAncToTree.R"),opt$input_tree, 'results_folder',opt$prefix)
+ 
+ } else {
+     
